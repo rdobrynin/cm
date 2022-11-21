@@ -13,7 +13,7 @@ services:
     networks:
       - ta_net
     ports:
-      - "5432:5432"
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
     volumes:
       - pg_data:/var/lib/postgresql/data
 
@@ -47,13 +47,13 @@ services:
     depends_on:
       - postgres
     volumes:
-      - ./client/:/app
-      - /app/node_modules
+      - ./client:/usr/src/app
+      - /usr/src/app/node_modules
     restart: always
     networks:
       - ta_net
     ports:
-      - "3000:3000"
+      - ${CLIENT_PORT}:${CLIENT_PORT}
 
   pgadmin:
     image: dpage/pgadmin4
