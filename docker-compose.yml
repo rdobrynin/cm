@@ -44,16 +44,16 @@ services:
   client:
     container_name: test-roman-client
     build:
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
       context: './client'
     depends_on:
       - postgres
+    volumes:
+      - ./client/:/app
+      - /app/node_modules
     restart: always
     ports:
       - "3000:3000"
-    environment:
-      PORT: 3000
-      ORIGIN: "http://localhost:3000"
 
 volumes:
   pg_data:

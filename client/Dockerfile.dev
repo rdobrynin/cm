@@ -1,0 +1,28 @@
+# Getting base image
+FROM node:16.18.0-alpine3.16
+# Adding a new system user "app-user" to run the app under primary user group "app-user"
+RUN addgroup app-user && adduser -S -G app-user app-user
+# Set user to the app
+USER app-user
+# setting working dir, docker creates app dir
+WORKDIR /app
+# create volume dir to persist app data outside container
+RUN mkdir data
+# optimising docker build
+COPY --chown=app-user:app-user package*.json .
+# run command to install project dependencies (node_modules is excluded in .dockerignore file)
+RUN npm install
+# copy all files from current path relative to docker file and paste it to app dir in linux
+# excludes files or dir mentioned in .dockerignore file
+COPY --chown=app-user:app-user . .
+# set environment variable
+ENV API_URL=http://localhost:3001/api
+# this port is when the app is run locally
+EXPOSE 3000
+# start app on container start, EXEC cmd form
+# same can be done using - ENTRYPOINT [ "npm", "run", "dev", "--", "--host", "--port", "3000"]
+CMD [ "npm", "run", "dev", "--", "--host", "--port", "3000"]
+
+################################################################################################
+## Build image => docker build -t my-app:1 .
+## Run Container => docker run -d -p 3000:3000 --name blue_sky my-app:1
