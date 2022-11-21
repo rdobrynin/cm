@@ -1,12 +1,59 @@
-version: "3.9"
+version: '3.8'
 
 services:
-  sveltekit:
-    container_name: svelte
-    build: .
+  postgres:
+    container_name: test-roman-postgres
+    image: postgres:14.2
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: test_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data/
+      - ./docker_postgres_init.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
+
+  nxginx:
+    container_name: test-roman-nginx
+    depends_on:
+      - api
+      - client
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: "./nginx"
+    ports:
+      - "3050:80"
+
+  api:
+    container_name: test-roman-api
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: './api'
+    depends_on:
+      - postgres
+    volumes:
+      - /api/node_modules
+      - ./api:/api
+    ports:
+      - '3001:3000'
+
+  client:
+    container_name: test-roman-client
+    build:
+      dockerfile: Dockerfile
+      context: './client'
+    depends_on:
+      - postgres
     restart: always
     ports:
-      - "5050:5050"
+      - "3000:3000"
     environment:
-      PORT: 5050
-      ORIGIN: "http://localhost:5050"
+      PORT: 3000
+      ORIGIN: "http://localhost:3000"
+
+volumes:
+  pg_data:
