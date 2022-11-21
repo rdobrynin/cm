@@ -6,40 +6,38 @@ services:
     image: postgres:14.2
     restart: always
     environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: root
-      POSTGRES_DB: test_db
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${POSTGRES_DB}
+      PG_DATA: /var/lib/postgresql/data
+    networks:
+      - ta_net
     ports:
       - "5432:5432"
     volumes:
-      - pg_data:/var/lib/postgresql/data/
-      - ./docker_postgres_init.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
-
-  nxginx:
-    container_name: test-roman-nginx
-    depends_on:
-      - api
-      - client
-    restart: always
-    build:
-      dockerfile: Dockerfile
-      context: "./nginx"
-    ports:
-      - "3050:80"
+      - pg_data:/var/lib/postgresql/data
 
   api:
     container_name: test-roman-api
-    restart: always
     build:
       dockerfile: Dockerfile
       context: './api'
+      target: development
     depends_on:
       - postgres
     volumes:
-      - /api/node_modules
-      - ./api:/api
+      - ./api:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:dev
     ports:
-      - '3001:3000'
+      - ${SERVER_PORT}:${SERVER_PORT}
+      - "9229:9229"
+    entrypoint: [ "npm", "run", "start:${NODE_ENV}" ]
+    env_file:
+      - .env
+    networks:
+      - ta_net
+    restart: unless-stopped
 
   client:
     container_name: test-roman-client
@@ -52,8 +50,31 @@ services:
       - ./client/:/app
       - /app/node_modules
     restart: always
+    networks:
+      - ta_net
     ports:
       - "3000:3000"
 
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: ta_pgadmin
+    restart: always
+    networks:
+      - ta_net
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+    depends_on:
+      - postgres
+    links:
+      - postgres
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+
+networks:
+  ta_net:
 volumes:
   pg_data:
+  pgadmin-data:
