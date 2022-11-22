@@ -1,46 +1,22 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { Logger, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { ValidationPipe } from './pipes/validation.pipe';
 
 async function bootstrap() {
+  const PORT = process.env.APP_PORT || 3888;
   const app = await NestFactory.create(AppModule);
-
-  app.setGlobalPrefix('api');
-  app.useGlobalPipes(
-      new ValidationPipe({
-        whitelist: true,
-        transform: true,
-        forbidNonWhitelisted: true,
-        transformOptions: {
-          enableImplicitConversion: true,
-        },
-      }),
-  );
-
-  const documentBuilder = new DocumentBuilder()
-      .setTitle('API')
-      .setVersion('1')
-      .addBearerAuth()
-      .build();
-
-  const doc = SwaggerModule.createDocument(app, documentBuilder);
-  SwaggerModule.setup('documentation', app, doc, {
-    swaggerOptions: {
-      persistAuthorization: true,
-    },
-  });
+  app.useGlobalPipes(new ValidationPipe());
 
   const config = new DocumentBuilder()
-      .setTitle('API')
-      .setDescription('The API description')
-      .setVersion('1.0')
-      .addBearerAuth()
-      .build();
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('/docs', app, document);
+    .setTitle('CM test task by Roman Dobrynin')
+    .setDescription('REST API Documentation')
+    .setVersion('1.0.0')
+    .build();
 
-  await app.listen(3001);
-  Logger.log(`Url for Swagger [OpenApi]: ${await app.getUrl()}/docs`);
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('/api/docs', app, document);
+
+  await app.listen(PORT, () => console.log(`Server started on port = ${PORT}`));
 }
 bootstrap();
