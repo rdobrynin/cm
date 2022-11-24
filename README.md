@@ -56,6 +56,7 @@ $ postgres
 * use postgreSQL and i/o data with DTOs
 * use typeOrm and configs
 * implement third-party service talking heads in separate module
+* how implement tests - added for User Service, you can see in (user-controller.spec.ts)
 * frontend part implemented with svelte and js
 * for frontend part for login used store
 * for getting data from third-party service for specific user using promise async await on FE
