@@ -90,6 +90,10 @@ curl -X 'POST' \
 ```
 ![how create user](create_user.png)
 
+First run 
+```bash
+docker-compose up
+```
 1. Login
 2. After the logging store saved and redirect to after login section (didn't implement localStorage or sessionStorage - to keep auth data), just for SPA.
 3. click introduce
