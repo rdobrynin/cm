@@ -5,7 +5,6 @@ const config = {
     headers: {
         Accept: "application/json",
         "Content-type": "application/json",
-        // 'Authorization': 'Bearer ',
     },
 };
 export const store = writable(null);
@@ -22,12 +21,12 @@ export const loginUser= async ( email, password ) => {
     return response.data.token;
 }
 
-export const signUpUser= async ( email, password ) => {
+export const getIntroduction = async (id, name) => {
     const postData = {
-        email: email,
-        password: password,
+        is: id,
+        name: name,
     };
-    const response = await  axios.post('http://localhost:3888/user', postData, config);
+    const response = await  axios.post('http://localhost:3888/head/speech', postData, config);
     console.log(response.data);
     return response.data;
 }

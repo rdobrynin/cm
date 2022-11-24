@@ -31,13 +31,13 @@ export class HeadController {
         return videoUrl;
     }
 
-    @Get(':id')
+    @Get(':userId')
     @HttpCode(HttpStatus.OK)
     @ApiOkResponse({
         type: HeadDto,
         description: 'Get all videos by user ID',
     })
-    async getById(@Param('id') id: number): Promise<HeadDto[]> {
+    async getById(@Param('userId') id: number): Promise<HeadDto[]> {
         return this.headService.getByUserId(id);
     }
 }

@@ -2,8 +2,8 @@
     import AfterLogin from '../Components/AfterLogin.svelte';
     import { store } from '../hooks/auth';
     import LoginComponent from '../Components/LoginComponent.svelte';
-</script>
 
+</script>
 
 {#if $store != null }
     <AfterLogin />

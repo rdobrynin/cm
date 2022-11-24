@@ -23,7 +23,10 @@
 
 </script>
 
-<form on:submit|preventDefault={login} class="flex mx-auto col-6">
+<form on:submit|preventDefault={login} style="width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    margin: auto;">
 
     <div class="mb-3">
         <label for="username" class="form-label">Email</label>

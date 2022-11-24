@@ -91,6 +91,6 @@ export class HeadService {
     }
 
     private generateSimpleRandomSpeech(speechDto: SpeechDto): string {
-        return `Here is test assignment for backend and frontend parts implemented by ${speechDto.name} `
+        return `This is a test assignment for backend and frontend parts implemented by ${speechDto.name} `
     }
 }
