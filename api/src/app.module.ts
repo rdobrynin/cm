@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
-import { UsersModule } from './users/users.module';
+import { UsersModule } from './modules/users/users.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { AuthModule } from './auth/auth.module';
+import { AuthModule } from './modules/auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import {SharedModule} from "./modules/shared/shared.module";
+import {HeadModule} from "./modules/heads/head.module";
 
 @Module({
   controllers: [],
@@ -34,6 +36,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     }),
     UsersModule,
     AuthModule,
+    SharedModule,
+    HeadModule,
   ],
 })
 export class AppModule {}

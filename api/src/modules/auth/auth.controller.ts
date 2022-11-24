@@ -17,6 +17,8 @@ import { JwtAuthGuard } from './jwt-auth.guards';
 import { LoginResponseDto } from './dto/login-response.dto';
 import { LoginRequestDto } from './dto/login-request.dto';
 import {UserDto} from "../users/dto/user.dto";
+import {AuthUser} from "../../auth-user.decorator";
+import {UserPayloadDto} from "./dto/user-payload-dto";
 
 @ApiTags('Authorization')
 @Controller('auth')
@@ -40,7 +42,8 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @UseGuards(JwtAuthGuard)
   @Get('/me')
-  user(@Request() req) {
-    return req.user;
+  user( @AuthUser() user: UserPayloadDto,) {
+    console.log(1);
+    return user;
   }
 }
