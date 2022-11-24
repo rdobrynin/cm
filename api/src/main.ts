@@ -5,7 +5,17 @@ import { ValidationPipe } from './pipes/validation.pipe';
 
 async function bootstrap() {
   const PORT = process.env.APP_PORT || 3888;
+  const options = {
+    "origin": "*",
+    "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+    "preflightContinue": false,
+    "optionsSuccessStatus": 204,
+    "credentials":false
+  }
   const app = await NestFactory.create(AppModule);
+  app.enableCors({
+    origin: true
+  });
   app.useGlobalPipes(new ValidationPipe());
 
   const config = new DocumentBuilder()

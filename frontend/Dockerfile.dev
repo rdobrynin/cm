@@ -18,11 +18,11 @@ COPY --chown=app-user:app-user . .
 # set environment variable
 ENV API_URL=http://localhost:3001/api
 # this port is when the app is run locally
-EXPOSE 3000
+EXPOSE 3001
 # start app on container start, EXEC cmd form
-# same can be done using - ENTRYPOINT [ "npm", "run", "dev", "--", "--host", "--port", "3000"]
-CMD [ "npm", "run", "dev", "--", "--host", "--port", "3000"]
+# same can be done using - ENTRYPOINT [ "npm", "run", "dev", "--", "--host", "--port", "3001"]
+CMD [ "npm", "run", "dev", "--", "--host", "--port", "3001"]
 
 ################################################################################################
 ## Build image => docker build -t my-app:1 .
-## Run Container => docker run -d -p 3000:3000 --name blue_sky my-app:1
+## Run Container => docker run -d -p 3001:3001 --name blue_sky my-app:1
