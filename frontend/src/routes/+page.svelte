@@ -1,7 +1,7 @@
 <script>
-    import AfterLogin from '../Components/AfterLogin.svelte';
+    import AfterLogin from '../components/AfterLogin.svelte';
     import { store } from '../hooks/auth';
-    import LoginComponent from '../Components/LoginComponent.svelte';
+    import LoginComponent from '../components/LoginComponent.svelte';
 </script>
 
 
