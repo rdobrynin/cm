@@ -48,7 +48,7 @@ $ postgres
 ```
 ![how create user](create_user.png)
 ## Goal
-### Demonstrate below skills:
+### List:
 
 * dockerization with nginx for proxy
 * backend part implemented with typescript 
